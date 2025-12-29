@@ -3,39 +3,41 @@
  */
 
 public class Planet {
-	private double x;
-	private double y;
-	private double z;
+	private Vector position;
 	private double mass;
 	private static int count = 1;
 	private int id;
+	private Vector velocity;
 	
-	public Planet(double x, double y, double z, double mass) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Planet(double x, double y, double mass, Vector velocity) {
+		position = new Vector(x, y);
 		this.mass = mass;
 		this.id = count;
 		count++;
+		this.velocity = velocity;
 	}
-
-	public double getX() {
-		return x;
+	
+	public Vector getPosition() {
+		return position;
 	}
-
-	public double getY() {
-		return y;
-	}
-
-	public double getZ() {
-		return z;
+	
+	public Vector getVelocity() {
+		return velocity;
 	}
 
 	public double getMass() {
 		return mass;
 	}
 	
+	public void setPosition(Vector v) {
+		this.position = v;
+	}
+	
+	public void setVelocity(Vector v) {
+		this.velocity = v;
+	}
+	
 	public String toString() {
-		return "ID: " + id + "; location: " + x + ", " + y + ", " + z;
+		return "ID: " + id + "; location: " + position.getX() + ", " + position.getY() + ", Velocity: [" + velocity.getX() + ", " + velocity.getY() + "]";
 	}
 }
