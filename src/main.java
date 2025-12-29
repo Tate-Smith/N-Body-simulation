@@ -1,18 +1,22 @@
-import java.util.Scanner;
 
-public class main {
-
+public class Main {
 	public static void main(String[] args) {
-		// Take in input from the user to determine the size of the simulation space
-		Scanner input = new Scanner(System.in);
-		System.out.print("Dimensions of simulation space (width, height)");
-		String info = input.nextLine();
-		String[] coordinates = info.split(",");
-		
-		// also ask how many planets they want then those planets info
-		
-		
-		input.close();
+		// first lets make just a simple simulation with earth and the sun to make sure the math is correct
+		Simulation sim = new Simulation (500.0, 500.0, 0.001);
+		// create the planets
+		Planet sun = new Planet(0.0, 0.0, 333_000.0, new Vector(0.0, 0.0));
+		Planet earth = new Planet(150.0, 0.0, 1.0, new Vector(0.0, 47.14));
+		// add planets to the sim
+		sim.addPlanet(sun);
+		sim.addPlanet(earth);
+		int i = 0;
+		while (i < 100000) {
+			if (i % 1000 == 0) {
+				System.out.println("Step: " + i + " " + sun);
+				System.out.println("Step: " + i + " " + earth);
+			}
+			sim.update();
+			i++;
+		}
 	}
-
 }
