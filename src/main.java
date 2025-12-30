@@ -67,7 +67,7 @@ public class Main {
 			double G = ((Number) simulation.get("G")).doubleValue();
 			double softening = ((Number) simulation.get("softening")).doubleValue();
 									
-			Simulation sim = new Simulation(step, G, softening);
+			Simulation sim = new Simulation(G, softening);
 			
 			// if the second input is "--sim" then it will be a procedurely generated sim
 			if (args.length > 1  && args[1].toLowerCase().equals("--sim")) {
@@ -133,16 +133,12 @@ public class Main {
 			}
 			// now simulate for n steps
 			int i = 0;
-			while (i < steps) {
-				if (i % 100 == 0) {
-					// print out all the planets info
-					ArrayList<Planet> planets = sim.getPlanets();
-					for (Planet p : planets) System.out.println("Step: " + i + "; " + p);
-				}
+			while (i <= steps) {
 				// call update on the simulation
-				sim.update();
+				sim.update(i);
 				i++;
 			}
+			sim.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

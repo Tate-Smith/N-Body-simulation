@@ -2,6 +2,7 @@
 /target/
 *.class
 *.log
+*.csv
 *.json
 .settings/
 .project

@@ -70,6 +70,6 @@ public class Vector {
 	}
 	
 	public String toString() {
-		return String.format("[%.4f,%.4f,%.4f]", x, y, z);
+		return String.format("%.4f,%.4f,%.4f", x, y, z);
 	}
 }
