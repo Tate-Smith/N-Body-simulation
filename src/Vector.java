@@ -56,4 +56,8 @@ public class Vector {
 	public double getZ() {
 		return z;
 	}
+	
+	public String toString() {
+		return "[" + x + "," + y + "," + z + "]";
+	}
 }

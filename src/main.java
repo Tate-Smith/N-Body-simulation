@@ -9,44 +9,45 @@ import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Random;
 
-// File format:
-//{
-//  "simulation": {
-//    "step": 0.01,
-//    "steps": 10000,
-//    "G": 1.0,
-//    "softening": 0.1
-//  },
-//  "planets": [
-//    {
-//      "mass": 1000.0,
-//      "position": [0, 0, 0],
-//      "velocity": [0, 0, 0]
-//    },
-//    {
-//      "mass": 1.0,
-//      "position": [100, 0, 0],
-//      "velocity": [0, 4.7, 0]
-//    }
-//  ]
-//}
+/* File format:
+{
+  "simulation": {
+    "step": 0.01,
+    "steps": 10000,
+    "G": 1.0,
+    "softening": 0.1
+  },
+  "planets": [
+    {
+      "mass": 1000.0,
+      "position": [0, 0, 0],
+      "velocity": [0, 0, 0]
+    },
+    {
+      "mass": 1.0,
+      "position": [100, 0, 0],
+      "velocity": [0, 4.7, 0]
+    }
+  ]
+}
 
-// Generate file format:
-//{
-//  "simulation": {
-//  "step": 0.01,
-//  "steps": 10000,
-//  "G": 1.0,
-//  "softening": 0.1,
-//  },
-//  "generation": {
-//    "count": 100,
-//    "massRange": [1, 100],
-//    "positionRange": [-500, 500],
-//    "velocityRange": [-2, 2],
-//  }
-//}
+ Generate file format:
+{
+  "simulation": {
+  "step": 0.01,
+  "steps": 10000,
+  "G": 1.0,
+  "softening": 0.1,
+  },
+  "generation": {
+    "count": 100,
+    "massRange": [1, 100],
+    "positionRange": [-500, 500],
+    "velocityRange": [-2, 2],
+  }
+}*/
 
 public class Main {
 	public static void main(String[] args) {
@@ -68,12 +69,36 @@ public class Main {
 			// if the second input is "--sim" then it will be a procedurely generated sim
 			if (args.length > 1  && args[1].toLowerCase().equals("--sim")) {
 				// get the generation info
-				// JSONObject gen = (JSONObject) root.get("generation");
+				JSONObject gen = (JSONObject) root.get("generation");
 				
-				// int count = (int) gen.get("count");
-				// JSONArray mass = (JSONArray) gen.get("massRange");
-				// JSONArray position = (JSONArray) gen.get("positionRange");
-				// JSONArray velocity = (JSONArray) gen.get("velocityRange");
+				int count = ((Number) gen.get("count")).intValue();
+				JSONArray mass = (JSONArray) gen.get("massRange");
+				JSONArray position = (JSONArray) gen.get("positionRange");
+				JSONArray velocity = (JSONArray) gen.get("velocityRange");
+				
+				// for every planet to be created
+				Random random = new Random();
+				int k = 0;
+				while (k < count) {
+					// select a random mass in the range
+					double m = random.nextDouble(((Number) mass.get(0)).doubleValue(), ((Number) mass.get(1)).doubleValue());
+					// select a random x,y,z in the range for postion
+					double x = random.nextDouble(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
+					double y = random.nextDouble(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
+					double z = random.nextDouble(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
+					// create a vector for position
+					Vector pos = new Vector(x, y, z);
+					// select a random x,y,z in the range for velocity
+					x = random.nextDouble(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue());
+					y = random.nextDouble(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue());
+					z = random.nextDouble(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue());
+					// create a vector for velocity
+					Vector v = new Vector(x, y, z);
+					// create the planet and add it to the sim
+					Planet p = new Planet(pos, m, v);
+					sim .addPlanet(p);
+					k++;
+				}
 			}
 			else {
 				// get all the planets and add them to the sim
