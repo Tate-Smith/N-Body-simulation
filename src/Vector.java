@@ -37,12 +37,24 @@ public class Vector {
 		this.z *= scalar;
 	}
 	
+	public void divide(double scalar) {
+		this.x = this.x / scalar;
+		this.y = this.y / scalar;
+		this.z = this.z / scalar;
+	}
+	
 	public double magnitude() {
 		return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2) + Math.pow(this.z, 2));
 	}
 	
 	public Vector normalize() {
 		return new Vector(this.x / this.magnitude(), this.y / this.magnitude(), this.z / this.magnitude());
+	}
+	
+	public void set(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 
 	public double getX() {
@@ -58,6 +70,6 @@ public class Vector {
 	}
 	
 	public String toString() {
-		return "[" + x + "," + y + "," + z + "]";
+		return String.format("[%.4f,%.4f,%.4f]", x, y, z);
 	}
 }

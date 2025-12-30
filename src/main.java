@@ -22,11 +22,13 @@ import java.util.Random;
   "planets": [
     {
       "mass": 1000.0,
+      "radius": 10.0,
       "position": [0, 0, 0],
       "velocity": [0, 0, 0]
     },
     {
       "mass": 1.0,
+      "radius": 1.0,
       "position": [100, 0, 0],
       "velocity": [0, 4.7, 0]
     }
@@ -44,6 +46,7 @@ import java.util.Random;
   "generation": {
     "count": 100,
     "massRange": [1, 100],
+    "radiusRange": [1, 10],
     "positionRange": [-500, 500],
     "velocityRange": [-2, 2],
   }
@@ -62,9 +65,9 @@ public class Main {
 			double step = ((Number) simulation.get("step")).doubleValue();
 			int steps = ((Number) simulation.get("steps")).intValue();
 			double G = ((Number) simulation.get("G")).doubleValue();
-			// double softening = (double) simulation.get("softening");
+			double softening = ((Number) simulation.get("softening")).doubleValue();
 									
-			Simulation sim = new Simulation(step, G);
+			Simulation sim = new Simulation(step, G, softening);
 			
 			// if the second input is "--sim" then it will be a procedurely generated sim
 			if (args.length > 1  && args[1].toLowerCase().equals("--sim")) {
@@ -73,6 +76,7 @@ public class Main {
 				
 				int count = ((Number) gen.get("count")).intValue();
 				JSONArray mass = (JSONArray) gen.get("massRange");
+				JSONArray radius = (JSONArray) gen.get("radiusRange");
 				JSONArray position = (JSONArray) gen.get("positionRange");
 				JSONArray velocity = (JSONArray) gen.get("velocityRange");
 				
@@ -82,6 +86,8 @@ public class Main {
 				while (k < count) {
 					// select a random mass in the range
 					double m = random.nextDouble(((Number) mass.get(0)).doubleValue(), ((Number) mass.get(1)).doubleValue());
+					// get a random radius in the range
+					double r = random.nextDouble(((Number) radius.get(0)).doubleValue(), ((Number) radius.get(1)).doubleValue());
 					// select a random x,y,z in the range for postion
 					double x = random.nextDouble(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
 					double y = random.nextDouble(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
@@ -95,7 +101,7 @@ public class Main {
 					// create a vector for velocity
 					Vector v = new Vector(x, y, z);
 					// create the planet and add it to the sim
-					Planet p = new Planet(pos, m, v);
+					Planet p = new Planet(pos, m, v, r);
 					sim .addPlanet(p);
 					k++;
 				}
@@ -108,8 +114,10 @@ public class Main {
 				for (Object obj : planets) {
 					JSONObject planet = (JSONObject) obj;
 					
-					// get the mass, position and velocity of every planet
-					double mass = (double) planet.get("mass");
+					// get the mass, radius, position and velocity of every planet
+					double mass = ((Number) planet.get("mass")).doubleValue();
+					
+					double radius = ((Number) planet.get("radius")).doubleValue();
 					
 					JSONArray position = (JSONArray) planet.get("position");
 					Vector pos = new Vector(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue(), ((Number) position.get(2)).doubleValue());
@@ -118,7 +126,7 @@ public class Main {
 					Vector v = new Vector(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue(), ((Number) velocity.get(2)).doubleValue());
 					
 					// create every planet and add it to the sim
-					Planet p = new Planet(pos, mass, v);
+					Planet p = new Planet(pos, mass, v, radius);
 					sim.addPlanet(p);
 				}
 				
