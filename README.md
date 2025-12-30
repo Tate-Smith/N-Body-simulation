@@ -23,6 +23,7 @@ future.
 
 **File Format**
 
+{
   "simulation": {
     "step": 0.01,
     "steps": 10000,
@@ -46,6 +47,7 @@ future.
 }
 
 **Or Generative Sim File Format**
+
 {
   "simulation": {
   "step": 0.01,
