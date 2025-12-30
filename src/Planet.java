@@ -1,5 +1,5 @@
 /*
- * This Class stores all the info for every planet in the simulation 
+ * Purpose: This Class stores all the info for every planet in the simulation 
  */
 
 public class Planet {
@@ -9,12 +9,12 @@ public class Planet {
 	private int id;
 	private Vector velocity;
 	
-	public Planet(double x, double y, double mass, Vector velocity) {
-		position = new Vector(x, y);
+	public Planet(Vector position, double mass, Vector velocity) {
+		this.position = new Vector(position);
 		this.mass = mass;
 		this.id = count;
 		count++;
-		this.velocity = velocity;
+		this.velocity = new Vector(velocity);
 	}
 	
 	public Vector getPosition() {
