@@ -26,7 +26,7 @@ public class Simulation {
 	
 	public void update() {
 		for (Planet p1 : planets) {
-			Vector a = new Vector(0.0, 0.0);
+			Vector a = new Vector(0.0, 0.0, 0.0);
 			for (Planet p2 : planets) {
 				if (p1 != p2) {
 					// if they arent the same planet apply the gravity of p2 to p1

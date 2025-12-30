@@ -38,6 +38,7 @@ public class Planet {
 	}
 	
 	public String toString() {
-		return "ID: " + id + "; location: " + position.getX() + ", " + position.getY() + ", Velocity: [" + velocity.getX() + ", " + velocity.getY() + "]";
+		return "ID: " + id + "; location: " + position.getX() + ", " + position.getY() + ", " + position.getZ() + 
+				", Velocity: [" + velocity.getX() + ", " + velocity.getY() + ", " + velocity.getZ() + "]";
 	}
 }

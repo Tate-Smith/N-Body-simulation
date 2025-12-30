@@ -21,13 +21,13 @@ import java.util.ArrayList;
 //  "planets": [
 //    {
 //      "mass": 1000.0,
-//      "position": [0, 0],
-//      "velocity": [0, 0]
+//      "position": [0, 0, 0],
+//      "velocity": [0, 0, 0]
 //    },
 //    {
 //      "mass": 1.0,
-//      "position": [100, 0],
-//      "velocity": [0, 4.7]
+//      "position": [100, 0, 0],
+//      "velocity": [0, 4.7, 0]
 //    }
 //  ]
 //}
@@ -87,10 +87,10 @@ public class Main {
 					double mass = (double) planet.get("mass");
 					
 					JSONArray position = (JSONArray) planet.get("position");
-					Vector pos = new Vector(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
+					Vector pos = new Vector(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue(), ((Number) position.get(2)).doubleValue());
 					
 					JSONArray velocity = (JSONArray) planet.get("velocity");
-					Vector v = new Vector(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue());
+					Vector v = new Vector(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue(), ((Number) velocity.get(2)).doubleValue());
 					
 					// create every planet and add it to the sim
 					Planet p = new Planet(pos, mass, v);
