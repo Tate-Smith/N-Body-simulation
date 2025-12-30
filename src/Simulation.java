@@ -4,33 +4,55 @@
  */
 
 import java.util.ArrayList;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Simulation {
-	private double step;
 	private double G;
 	private double softening;
 	private ArrayList<Planet> planets;
+	private FileWriter writer;
 	
-	public Simulation(double step, double G, double softening) {
-		this.step = step;
+	public Simulation(double G, double softening) throws IOException {
 		this.G = G;
 		this.softening = softening;
 		planets = new ArrayList<>();
+		// intialize the output file and add header
+		writer = new FileWriter("SimulationOutput.csv");
+		writer.write("STEP, ID, MASS, X,Y,Z, VELOCITY X, VELOCITY Y, VELOCITY Z, COLLISION?\n");
 	}
 	
 	public void addPlanet(Planet p) {
 		planets.add(p);
 	}
 	
-	public ArrayList<Planet> getPlanets() {
-		return new ArrayList<Planet>(this.planets);
+	public void close() throws IOException {
+		/*
+		 * This function closes the writer 
+		 */
+
+		writer.close();
 	}
 	
-	public void update() {
+	private void writeToFile(int step) throws IOException {
+		/*
+		 * This function prints to an output file the id, mass, position and velocity, of every
+		 * planet before each update
+		 */
+		
+		for (Planet p : planets) {
+			writer.write(step + ", " + p.getId() + ", " + p.getMass() + ", " + p.getPosition() + ", " + p.getVelocity() + ",-" + "\n");
+		}
+	}
+	
+	public void update(int step) throws IOException {
 		/*
 		 * This function is what updates the simulation everystep, it goes through and
 		 * applies the forces to every planet and deaks with collisions
 		 */
+		
+		// if the step is divisible by 100 write to outputfile
+		if (step % 100 == 0) writeToFile(step);
 		
 		for (int i = 0; i < planets.size(); i++) {
 			for (int k = i + 1; k < planets.size(); k++) {
@@ -77,8 +99,9 @@ public class Simulation {
 					if (distance < p1.getRadius() + p2.getRadius()) {
 						// apply the collision
 						collision(p1, p2);
-						// print that a collision happened
-						System.out.println("COLLISION! between planets: " + p1.getId() + " and " + p2.getId());
+						// print to the output file that a collision happened
+						this.writer.write(step + ", " + p1.getId() + ", " + p1.getMass() + ", " + 
+						p1.getPosition() + ", " + p1.getVelocity() + "," + p1.getId() + " and " + p2.getId() + "\n");
 						// add planets to list of to be removed
 						removed.add(p2);
 					}
