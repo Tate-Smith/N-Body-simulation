@@ -1,22 +1,117 @@
+/*
+ * Last Update: 12/29/25
+ * Purpose: This is the main class that parses the json file and sets up the simulation
+ * along with running it
+ */
+
+import org.json.simple.*;
+import org.json.simple.parser.JSONParser;
+
+import java.io.FileReader;
+import java.util.ArrayList;
+
+// File format:
+//{
+//  "simulation": {
+//    "step": 0.01,
+//    "steps": 10000,
+//    "G": 1.0,
+//    "softening": 0.1
+//  },
+//  "planets": [
+//    {
+//      "mass": 1000.0,
+//      "position": [0, 0],
+//      "velocity": [0, 0]
+//    },
+//    {
+//      "mass": 1.0,
+//      "position": [100, 0],
+//      "velocity": [0, 4.7]
+//    }
+//  ]
+//}
+
+// Generate file format:
+//{
+//  "simulation": {
+//  "step": 0.01,
+//  "steps": 10000,
+//  "G": 1.0,
+//  "softening": 0.1,
+//  },
+//  "generation": {
+//    "count": 100,
+//    "massRange": [1, 100],
+//    "positionRange": [-500, 500],
+//    "velocityRange": [-2, 2],
+//  }
+//}
 
 public class Main {
 	public static void main(String[] args) {
-		// first lets make just a simple simulation with earth and the sun to make sure the math is correct
-		Simulation sim = new Simulation (500.0, 500.0, 0.001);
-		// create the planets
-		Planet sun = new Planet(0.0, 0.0, 333_000.0, new Vector(0.0, 0.0));
-		Planet earth = new Planet(150.0, 0.0, 1.0, new Vector(0.0, 47.14));
-		// add planets to the sim
-		sim.addPlanet(sun);
-		sim.addPlanet(earth);
-		int i = 0;
-		while (i < 100000) {
-			if (i % 1000 == 0) {
-				System.out.println("Step: " + i + " " + sun);
-				System.out.println("Step: " + i + " " + earth);
+		// take user input in as a JSON file from the command line
+		// decode the JSON file to set up the physics sim
+		JSONParser parser = new JSONParser();
+		try {
+			JSONObject root = (JSONObject) parser.parse(new FileReader(args[0]));
+									
+			// get all the simulation data
+			JSONObject simulation = (JSONObject) root.get("simulation");
+			double step = ((Number) simulation.get("step")).doubleValue();
+			int steps = ((Number) simulation.get("steps")).intValue();
+			double G = ((Number) simulation.get("G")).doubleValue();
+			// double softening = (double) simulation.get("softening");
+									
+			Simulation sim = new Simulation(step, G);
+			
+			// if the second input is "--sim" then it will be a procedurely generated sim
+			if (args.length > 1  && args[1].toLowerCase().equals("--sim")) {
+				// get the generation info
+				// JSONObject gen = (JSONObject) root.get("generation");
+				
+				// int count = (int) gen.get("count");
+				// JSONArray mass = (JSONArray) gen.get("massRange");
+				// JSONArray position = (JSONArray) gen.get("positionRange");
+				// JSONArray velocity = (JSONArray) gen.get("velocityRange");
 			}
-			sim.update();
-			i++;
+			else {
+				// get all the planets and add them to the sim
+				JSONArray planets = (JSONArray) root.get("planets");
+				
+				// for every planet listed create a planet object and add it to the sim
+				for (Object obj : planets) {
+					JSONObject planet = (JSONObject) obj;
+					
+					// get the mass, position and velocity of every planet
+					double mass = (double) planet.get("mass");
+					
+					JSONArray position = (JSONArray) planet.get("position");
+					Vector pos = new Vector(((Number) position.get(0)).doubleValue(), ((Number) position.get(1)).doubleValue());
+					
+					JSONArray velocity = (JSONArray) planet.get("velocity");
+					Vector v = new Vector(((Number) velocity.get(0)).doubleValue(), ((Number) velocity.get(1)).doubleValue());
+					
+					// create every planet and add it to the sim
+					Planet p = new Planet(pos, mass, v);
+					sim.addPlanet(p);
+				}
+				
+			}
+			// now simulate for n steps
+			int i = 0;
+			while (i < steps) {
+				if (i % 100 == 0) {
+					// print out all the planets info
+					ArrayList<Planet> planets = sim.getPlanets();
+					for (Planet p : planets) System.out.println("Step: " + i + "; " + p);
+				}
+				// call update on the simulation
+				sim.update();
+				i++;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

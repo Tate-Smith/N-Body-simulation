@@ -1,3 +1,6 @@
+/*
+ * Purpose: This is the vector class which stores the data x, y representing a vector
+ */
 
 public class Vector {
 	private double x;

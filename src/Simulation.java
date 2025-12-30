@@ -1,20 +1,27 @@
+/*
+ * Purpose: This is the simulation class that stores all the planets in the sim
+ * and performs all the calculations on them
+ */
+
 import java.util.ArrayList;
 
 public class Simulation {
-	private double width;
-	private double height;
 	private double step;
+	private double G;
 	private ArrayList<Planet> planets;
 	
-	public Simulation(double w, double h, double step) {
-		this.width = w;
-		this.height = h;
+	public Simulation(double step, double G) {
 		this.step = step;
+		this.G = G;
 		planets = new ArrayList<>();
 	}
 	
 	public void addPlanet(Planet p) {
 		planets.add(p);
+	}
+	
+	public ArrayList<Planet> getPlanets() {
+		return new ArrayList<Planet>(this.planets);
 	}
 	
 	public void update() {
@@ -24,7 +31,6 @@ public class Simulation {
 				if (p1 != p2) {
 					// if they arent the same planet apply the gravity of p2 to p1
 					// A = G(p2.mass / distance^2) * direction
-					// G = 1
 					// get the distance vector 
 					Vector position = new Vector(p1.getPosition());
 					position.sub(p2.getPosition());
@@ -32,7 +38,7 @@ public class Simulation {
 					double distance = position.magnitude();
 					Vector scale = position.normalize();
 					// do the equation
-					double temp = (p2.getMass() / Math.pow(distance, 2));
+					double temp = G * (p2.getMass() / Math.pow(distance, 2));
 					scale.scale(temp);
 					// add to the total acceleration
 					a.add(scale);
