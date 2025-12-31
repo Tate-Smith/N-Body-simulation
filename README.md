@@ -12,12 +12,10 @@ Position Range, Velocity Range
 ### Features
 This N-Body simulation is in 3 Dimensions, and can hadle anywhere from 2-1000
 Planets, It handles collisions by merging the two Planets, their mass, and conserving 
-momentum. Right now the program uses Euler integration but will use Leapfrog in the
-future.
+momentum. The program uses Leapfrog integration to keep accurate data.
 
 ### Upcoming
 - Octree
-- Leapfrog Integration
 - Visualization
 - More...
 
