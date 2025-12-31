@@ -8,7 +8,6 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.Random;
 
 /* File format:
@@ -69,8 +68,8 @@ public class Main {
 									
 			Simulation sim = new Simulation(G, softening);
 			
-			// if the second input is "--sim" then it will be a procedurely generated sim
-			if (args.length > 1  && args[1].toLowerCase().equals("--sim")) {
+			// if the second input is "--gen" then it will be a procedurely generated sim
+			if (args.length > 1  && args[1].toLowerCase().equals("--gen")) {
 				// get the generation info
 				JSONObject gen = (JSONObject) root.get("generation");
 				
@@ -132,10 +131,11 @@ public class Main {
 				
 			}
 			// now simulate for n steps
+			sim.initialize(step);
 			int i = 0;
 			while (i <= steps) {
 				// call update on the simulation
-				sim.update(i);
+				sim.update(step, i);
 				i++;
 			}
 			sim.close();
