@@ -45,23 +45,25 @@ public class Planet {
 		this.force.add(force);
 	}
 	
-	public void integrate(double step) {
+	public void integrateVelocity(double step) {
 		// A = F / M
 		Vector a = new Vector(force);
 		a.divide(mass);
-		
+				
 		// Velocity = Velocity + A * step
 		a.scale(step);
 		this.velocity.add(a);
-		
+	}
+	
+	public void integratePosition(double step) {
 		// Position = Position + Velocity * step
 		Vector v = new Vector(velocity);
 		v.scale(step);
 		this.position.add(v);
-		
-		// reset force 
+	}
+	
+	public void clear() {
 		force.set(0.0, 0.0, 0.0);
-		
 	}
 	
 	public void setMass(double mass) {
@@ -74,10 +76,5 @@ public class Planet {
 	
 	public void setVelocity(Vector v) {
 		this.velocity = v;
-	}
-	
-	public String toString() {
-		return String.format("ID: %d; location: %s, Velocity: %s", this.id, 
-				this.position, this.velocity);
 	}
 }
