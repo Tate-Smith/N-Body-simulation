@@ -10,12 +10,13 @@ format generates a random simulation given values of counts of Planets, Mass Ran
 Position Range, Velocity Range
 
 ### Features
-This N-Body simulation is in 3 Dimensions, and can hadle anywhere from 2-1000
+This N-Body simulation is in 3 Dimensions, and can hadle anywhere from 2-100000
 Planets, It handles collisions by merging the two Planets, their mass, and conserving 
-momentum. The program uses Leapfrog integration to keep accurate data.
+momentum. The program uses Leapfrog integration to keep accurate data. At > 500 planets 
+the program uses an Octree to improve performance.
 
 ### Upcoming
-- Octree
+- Performance optimizations
 - Visualization
 - More...
 
