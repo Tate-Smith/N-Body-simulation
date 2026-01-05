@@ -159,9 +159,11 @@ public class OctreeNode {
 					position.sub(p.getPosition());
 					// get the distance between the planets and direction
 					double distance = position.magnitude();
+		            
 					Vector scale = position.normalize();
 					// do the equation
 					double temp = G * ((p.getMass() * leaf.getMass()) / ((distance * distance) + (softening * softening)));
+					
 					scale.scale(temp);
 					// add to each planets force
 					p.addForce(scale);
@@ -174,7 +176,7 @@ public class OctreeNode {
 			c.sub(p.getPosition());
 			double dist = c.magnitude();
 			
-			if (dist != 0 && (this.getSize() / dist) < 0.5) {
+			if (dist != 0 && (this.getSize() / dist) < 0.3 ) {
 				// if too far then use approximation for the  calculations
 				Vector scale = c.normalize();
 				// do the equation

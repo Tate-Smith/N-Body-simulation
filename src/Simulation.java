@@ -200,6 +200,37 @@ public class Simulation {
 		this.planets.removeAll(removed);
 	}
 	
+	private void totalEnergy(int curStep) {
+		/*
+		 * This mwthod is used purely for devug to make sure the total Energy remains similar
+		 */
+		
+		// if DEBUG then printout the total energy
+		double kinetic = 0;
+		
+		// calculate kinetic energy
+		for (Planet p : planets) {
+			double velocity = p.getVelocity().magnitude();
+			kinetic += 0.5 * p.getMass() * (velocity * velocity);
+		}
+		double potential = 0;
+		// get the potential energy
+		for (int i = 0; i < planets.size(); i++) {
+			for (int k = i + 1; k < planets.size(); k++) {
+				// get each body
+				Planet a = planets.get(i);
+				Planet b = planets.get(k);
+				// get the distance
+				Vector distance = a.getPosition();
+				distance.sub(b.getPosition());
+				double distVal = distance.magnitude();
+				
+				potential -= (G * a.getMass() * b.getMass()) / distVal;
+			}
+		}
+		System.out.println("Total Eneergy at step " + curStep + ": " + (kinetic + potential));
+	}
+	
 	public void update(double stepSize, int curStep) throws IOException {
 		/*
 		 * This function is what updates the simulation everystep, it goes through and
@@ -210,15 +241,13 @@ public class Simulation {
 		for (Planet p : planets) p.integratePosition(stepSize);
 		
 		// for if there are less than 200 planets otherwise use and Octree
-		if (planets.size() < 500) {
-			if (curStep == 0) System.out.println("Using DIRECT method (n=" + planets.size() + ")");
+		if (planets.size() < 200) {
 			smallCalcCollisions(curStep);
 			// clear the force vector for all
 			for (Planet p : planets) p.clear();
 			smallCalcForces();
 		}
 		else {
-			if (curStep == 0) System.out.println("Using OCTREE method (n=" + planets.size() + ")");
 			OctreeNode tree = buildOctree();
 			octreeCalcCollisions(curStep, tree);
 			// clear the force vector for all
@@ -230,7 +259,11 @@ public class Simulation {
 		for (Planet p : planets) p.integrateVelocity(stepSize);
 		
 		// if the step is divisible by 100 write to outputfile
-		if (curStep % 100 == 0) writeToFile(curStep);
+		if (curStep % 100 == 0) {
+			writeToFile(curStep);
+			boolean DEBUG = true;
+			if (DEBUG) totalEnergy(curStep);
+		}
 	}
 	
 	private void collision(Planet p1, Planet p2) {
