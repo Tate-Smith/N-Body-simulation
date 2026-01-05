@@ -10,47 +10,6 @@ import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
 import java.util.Random;
 
-/* File format:
-{
-  "simulation": {
-    "step": 0.01,
-    "steps": 10000,
-    "G": 1.0,
-    "softening": 0.1
-  },
-  "planets": [
-    {
-      "mass": 1000.0,
-      "radius": 10.0,
-      "position": [0, 0, 0],
-      "velocity": [0, 0, 0]
-    },
-    {
-      "mass": 1.0,
-      "radius": 1.0,
-      "position": [100, 0, 0],
-      "velocity": [0, 4.7, 0]
-    }
-  ]
-}
-
- Generate file format:
-{
-  "simulation": {
-  "step": 0.01,
-  "steps": 10000,
-  "G": 1.0,
-  "softening": 0.1,
-  },
-  "generation": {
-    "count": 100,
-    "massRange": [1, 100],
-    "radiusRange": [1, 10],
-    "positionRange": [-500, 500],
-    "velocityRange": [-2, 2],
-  }
-}*/
-
 public class Main {
 	public static void main(String[] args) {
 		// take user input in as a JSON file from the command line
@@ -62,7 +21,7 @@ public class Main {
 			// get all the simulation data
 			JSONObject simulation = (JSONObject) root.get("simulation");
 			double step = ((Number) simulation.get("step")).doubleValue();
-			int steps = ((Number) simulation.get("steps")).intValue();
+			int numOfSteps = ((Number) simulation.get("steps")).intValue();
 			double G = ((Number) simulation.get("G")).doubleValue();
 			double softening = ((Number) simulation.get("softening")).doubleValue();
 									
@@ -133,7 +92,7 @@ public class Main {
 			// now simulate for n steps
 			sim.initialize(step);
 			int i = 0;
-			while (i <= steps) {
+			while (i <= numOfSteps) {
 				// call update on the simulation
 				sim.update(step, i);
 				i++;

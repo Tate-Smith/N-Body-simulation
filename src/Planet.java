@@ -15,6 +15,7 @@ public class Planet {
 		this.position = new Vector(position);
 		this.mass = mass;
 		this.id = count;
+		// increment count to have a new id for each planet
 		count++;
 		this.velocity = new Vector(velocity);
 		this.radius = radius;
@@ -41,11 +42,20 @@ public class Planet {
 		return id;
 	}
 	
+	public Vector getForce() {
+		return new Vector(force);
+	}
+	
 	public void addForce(Vector force) {
 		this.force.add(force);
 	}
 	
 	public void integrateVelocity(double step) {
+		/*
+		 * This function is used to integrate the planets Velocity at each
+		 * step
+		 */
+		
 		// A = F / M
 		Vector a = new Vector(force);
 		a.divide(mass);
@@ -56,6 +66,11 @@ public class Planet {
 	}
 	
 	public void integratePosition(double step) {
+		/*
+		 * This function is used to integrate the planets Position at each
+		 * step
+		 */
+		
 		// Position = Position + Velocity * step
 		Vector v = new Vector(velocity);
 		v.scale(step);
@@ -71,10 +86,14 @@ public class Planet {
 	}
 	
 	public void setPosition(Vector v) {
-		this.position = v;
+		this.position = new Vector(v);
 	}
 	
 	public void setVelocity(Vector v) {
-		this.velocity = v;
+		this.velocity = new Vector(v);
+	}
+	
+	public static void resetCount() {
+		count = 1;
 	}
 }
