@@ -4,6 +4,7 @@
 *.log
 *.csv
 *.json
+*Test.java
 .settings/
 .project
 .classpath

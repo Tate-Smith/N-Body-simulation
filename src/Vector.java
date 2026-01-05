@@ -38,9 +38,17 @@ public class Vector {
 	}
 	
 	public void divide(double scalar) {
-		this.x = this.x / scalar;
-		this.y = this.y / scalar;
-		this.z = this.z / scalar;
+		// if the scalar is 0 set all vals to 0 to avoid a divide by 0 error
+		if (scalar == 0.0) {
+			this.x = 0.0;
+			this.y = 0.0;
+			this.z = 0.0;
+		}
+		else {
+			this.x = this.x / scalar;
+			this.y = this.y / scalar;
+			this.z = this.z / scalar;
+		}
 	}
 	
 	public double magnitude() {
@@ -48,7 +56,10 @@ public class Vector {
 	}
 	
 	public Vector normalize() {
-		return new Vector(this.x / this.magnitude(), this.y / this.magnitude(), this.z / this.magnitude());
+		// if the magnitude is 0, set return a 0 vector to avoid dividing by 0
+		double mag = this.magnitude();
+		if (mag == 0) return new Vector(0.0, 0.0, 0.0);
+		return new Vector(this.x / mag, this.y / mag, this.z / mag);
 	}
 	
 	public void set(double x, double y, double z) {
