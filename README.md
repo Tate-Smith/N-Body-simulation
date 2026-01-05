@@ -21,8 +21,8 @@ the program uses an Octree to improve performance.
 - More...
 
 **File Format**
-
-`{
+`
+{
   "simulation": {
     "step": 0.01,
     "steps": 10000,
@@ -43,11 +43,11 @@ the program uses an Octree to improve performance.
       "velocity": [0, 4.7, 0]
     }
   ]
-}`
-
+}
+`
 **Or Generative Sim File Format**
-
-`{
+`
+{
   "simulation": {
   "step": 0.01,
   "steps": 10000,
@@ -61,8 +61,8 @@ the program uses an Octree to improve performance.
     "positionRange": [-500, 500],
     "velocityRange": [-2, 2],
   }
-}`
-
+}
+`
 ## How to run
 
 In the Command Line:
