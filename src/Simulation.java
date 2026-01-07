@@ -261,7 +261,7 @@ public class Simulation {
 		// if the step is divisible by 100 write to outputfile
 		if (curStep % 100 == 0) {
 			writeToFile(curStep);
-			boolean DEBUG = true;
+			boolean DEBUG = false;
 			if (DEBUG) totalEnergy(curStep);
 		}
 	}
